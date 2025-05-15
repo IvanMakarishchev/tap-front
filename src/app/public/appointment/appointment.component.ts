@@ -15,7 +15,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Injectable({ providedIn: 'root' })
 @Component({
-  selector: 'app-booking',
+  selector: 'app-appointment',
   providers: [provideNativeDateAdapter()],
   imports: [
     FormsModule,
@@ -26,14 +26,14 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MatTimepickerModule,
     MatDatepickerModule,
   ],
-  templateUrl: './booking.component.html',
-  styleUrl: './booking.component.css',
+  templateUrl: './appointment.component.html',
+  styleUrl: './appointment.component.css',
   standalone: true,
 })
-export class BookingComponent {
+export class AppointmentComponent {
   private http = inject(HttpClient);
 
-  bookingForm: FormGroup = new FormGroup({
+  appointmentForm: FormGroup = new FormGroup({
     anrede: new FormControl('Ohne Angabe'),
     vorname: new FormControl(''),
     nachname: new FormControl(''),
@@ -45,11 +45,11 @@ export class BookingComponent {
   });
 
   onSubmit(): void {
-    (this.bookingForm.value.datum as Date).setHours(
-      (this.bookingForm.value.zeit as Date).getHours()
+    (this.appointmentForm.value.datum as Date).setHours(
+      (this.appointmentForm.value.zeit as Date).getHours()
     );
-    (this.bookingForm.value.datum as Date).setMinutes(
-      (this.bookingForm.value.zeit as Date).getMinutes()
+    (this.appointmentForm.value.datum as Date).setMinutes(
+      (this.appointmentForm.value.zeit as Date).getMinutes()
     );
 
     const {
@@ -60,7 +60,7 @@ export class BookingComponent {
       telefon,
       datum,
       grund: grund_des_termines,
-    } = this.bookingForm.value;
+    } = this.appointmentForm.value;
 
     const body = {
       data: {

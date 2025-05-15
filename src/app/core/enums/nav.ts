@@ -3,6 +3,6 @@ export enum Nav {
     About = '/about',
     Services = '/services',
     Gallery = '/gallery',
-    Booking = '/booking',
+    "Make Appointment" = '/make-appointment',
     Contacts = '/contacts'
 }
