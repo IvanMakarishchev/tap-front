@@ -1,0 +1,3 @@
+<nav class="navigation">
+    <a *ngFor="let item of nav | keyvalue: null" [routerLink]='item.value' mat-button>{{ item.key }}</a>
+</nav>
