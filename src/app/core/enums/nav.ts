@@ -6,3 +6,8 @@ export enum Nav {
     "Make Appointment" = '/make-appointment',
     Contacts = '/contacts'
 }
+
+export enum NavAuth {
+    LogIn = '/auth/login',
+    Register = '/auth/register'
+}

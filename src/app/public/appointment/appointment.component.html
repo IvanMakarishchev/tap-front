@@ -1,19 +1,19 @@
 <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-label>Anrede *</mat-label>
-    <mat-select formControlName="anrede">
+    <mat-select formControlName="salutation">
       <mat-option value="Herr">Herr</mat-option>
       <mat-option value="Frau">Frau</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Vorname *</mat-label>
-    <input formControlName="vorname" matInput />
+    <input formControlName="firstName" matInput />
     <mat-hint align="end"></mat-hint>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Nachname *</mat-label>
-    <input formControlName="nachname" matInput />
+    <input formControlName="lastName" matInput />
     <mat-hint align="end"></mat-hint>
   </mat-form-field>
   <mat-form-field>
@@ -23,26 +23,24 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Telefonnummer *</mat-label>
-    <input formControlName="telefon" matInput />
+    <input formControlName="telephone" matInput />
     <mat-hint align="end"></mat-hint>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Grund des Termines</mat-label>
-    <textarea formControlName="grund" matInput></textarea>
+    <textarea formControlName="reason" matInput></textarea>
   </mat-form-field>
   <mat-form-field>
-  <mat-label>Am (TT/MM/JJJJ)</mat-label>
-  <input matInput [matDatepicker]="datepicker" formControlName="datum">
-  <mat-datepicker #datepicker/>
-  <mat-datepicker-toggle [for]="datepicker" matSuffix/>
-</mat-form-field>
-<mat-form-field>
-  <mat-label>Um</mat-label>
-  <input matInput
-    [matTimepicker]="timepicker"
-    formControlName="zeit">
-  <mat-timepicker-toggle [for]="timepicker" matSuffix/>
-  <mat-timepicker interval="15min" #timepicker/>
-</mat-form-field>
+    <mat-label>Am (TT/MM/JJJJ)</mat-label>
+    <input matInput [matDatepicker]="datepicker" formControlName="date" />
+    <mat-datepicker #datepicker />
+    <mat-datepicker-toggle [for]="datepicker" matSuffix />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Um</mat-label>
+    <input matInput [matTimepicker]="timepicker" formControlName="time" />
+    <mat-timepicker-toggle [for]="timepicker" matSuffix />
+    <mat-timepicker interval="15min" #timepicker />
+  </mat-form-field>
   <button type="submit">submit</button>
 </form>

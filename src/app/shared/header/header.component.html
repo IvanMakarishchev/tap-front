@@ -1,3 +1,10 @@
 <nav class="navigation">
-    <a *ngFor="let item of nav | keyvalue: null" [routerLink]='item.value' mat-button>{{ item.key }}</a>
+    <button *ngFor="let item of nav | keyvalue : null" [routerLink]="item.value" mat-button>
+        {{ item.key }}
+    </button>
+    @if (user$ | async; as user) {
+        <button mat-button>Hallo, {{ user.firstName }}</button>
+    } @else {
+        <button [routerLink]="navAuth.LogIn" mat-button>Log In</button>
+    }
 </nav>
