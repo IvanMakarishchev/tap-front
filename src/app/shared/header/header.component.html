@@ -3,7 +3,11 @@
         {{ item.key }}
     </button>
     @if (user$ | async; as user) {
-        <button mat-button>Hallo, {{ user.firstName }}</button>
+        <button mat-button [matMenuTriggerFor]="login">Hallo, {{ user.firstName }}</button>
+        <mat-menu #login>
+            <button mat-menu-item>Einstellungen</button>
+            <button mat-menu-item (click)="logout()">Abmelden</button>
+        </mat-menu>
     } @else {
         <button [routerLink]="navAuth.LogIn" mat-button>Log In</button>
     }

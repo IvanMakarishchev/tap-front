@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { NavAuth } from '../../core/enums/nav';
-import { RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { EndPoints } from '../../core/enums/endpoints';
+import { Nav, NavAuth } from '../../core/enums/nav';
+import { Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User } from '../../core/interfaces/common';
+import { UserService } from '../../core/services/user/user.service';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,10 +22,11 @@ import { User } from '../../core/interfaces/common';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  nav = Nav;
   navAuth = NavAuth;
   registerForm: FormGroup;
 
-  constructor(private http: HttpClient) {
+  constructor(private auth: AuthService, private userService: UserService, private router: Router) {
     this.registerForm = new FormGroup({
       salutation: new FormControl('Ohne Angabe'),
       firstName: new FormControl('', { nonNullable: true }),
@@ -38,20 +37,21 @@ export class RegisterComponent {
     });
   }
 
-  onSubmit() {
-    const request$: Observable<any> = this.http.post(
-      environment.apiUrl + EndPoints.User,
-      JSON.stringify(this.registerForm.value),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  create() {
+    const request$: Observable<any> = this.userService.create(this.registerForm.value);
 
     request$.subscribe({
-      next: (data: User) => console.log(data),
-      error: (err) => console.error(err)
-    })
+      next: () => {
+        return this.auth
+          .login({
+            identifier: this.registerForm.value.email,
+            password: this.registerForm.value.password,
+          })
+          .subscribe({
+            next: () => this.router.navigate([this.nav.Home])
+          });
+      },
+      error: (err) => console.error(err),
+    });
   }
 }

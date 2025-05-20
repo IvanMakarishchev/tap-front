@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Nav, NavAuth } from '../../core/enums/nav';
 import { CommonModule, KeyValuePipe, NgFor } from '@angular/common';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { Observable } from 'rxjs';
-import { User } from '../../core/interfaces/common';
+import { UserResponseData } from '../../core/interfaces/common';
 
 @Component({
   selector: 'app-header',
@@ -18,13 +18,14 @@ import { User } from '../../core/interfaces/common';
 export class HeaderComponent {
   nav = Nav;
   navAuth = NavAuth;
-  user$: Observable<User | null>;
+  user$: Observable<UserResponseData | null>;
   
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private router: Router) {
     this.user$ = this.auth.user$
   }
 
   logout() {
     this.auth.logout();
+    this.router.navigate([this.nav.Home]);
   }
 }
