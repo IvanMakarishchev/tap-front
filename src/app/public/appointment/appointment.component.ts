@@ -28,7 +28,7 @@ import { EndPoints } from '../../core/enums/endpoints';
     MatSelectModule,
     MatTimepickerModule,
     MatDatepickerModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './appointment.component.html',
   styleUrl: './appointment.component.css',
@@ -39,8 +39,8 @@ export class AppointmentComponent {
 
   appointmentForm: FormGroup = new FormGroup({
     salutation: new FormControl('Ohne Angabe'),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
+    firstname: new FormControl(''),
+    lastname: new FormControl(''),
     email: new FormControl(''),
     telephone: new FormControl(),
     date: new FormControl(),
@@ -58,25 +58,27 @@ export class AppointmentComponent {
 
     const {
       salutation,
-      first_name,
-      last_name,
-      email,
+      firstname,
+      lastname,
       telephone,
-      date,
+      email,
       reason,
+      date
     } = this.appointmentForm.value;
 
     const body = {
       data: {
         salutation,
-        first_name,
-        last_name,
-        email,
+        firstname,
+        lastname,
         telephone,
-        date,
+        email,
         reason,
+        date,
       },
     };
+
+    console.log(JSON.stringify(body));
 
     this.http
       .post(environment.apiUrl + EndPoints.Appointments, JSON.stringify(body), {

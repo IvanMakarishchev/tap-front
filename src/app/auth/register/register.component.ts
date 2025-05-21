@@ -29,8 +29,8 @@ export class RegisterComponent {
   constructor(private auth: AuthService, private userService: UserService, private router: Router) {
     this.registerForm = new FormGroup({
       salutation: new FormControl('Ohne Angabe'),
-      firstName: new FormControl('', { nonNullable: true }),
-      lastName: new FormControl('', { nonNullable: true }),
+      firstname: new FormControl('', { nonNullable: true }),
+      lastname: new FormControl('', { nonNullable: true }),
       telephone: new FormControl(),
       email: new FormControl('', { nonNullable: true }),
       password: new FormControl('', { nonNullable: true }),
@@ -38,20 +38,26 @@ export class RegisterComponent {
   }
 
   create() {
-    const request$: Observable<any> = this.userService.create(this.registerForm.value);
+    const body = {
+      username: this.registerForm.value.email,
+      ...this.registerForm.value
+    }
+    const request$: Observable<any> = this.userService.create(body);
 
-    request$.subscribe({
-      next: () => {
-        return this.auth
-          .login({
-            identifier: this.registerForm.value.email,
-            password: this.registerForm.value.password,
-          })
-          .subscribe({
-            next: () => this.router.navigate([this.nav.Home])
-          });
-      },
-      error: (err) => console.error(err),
-    });
+    request$.subscribe(
+    //   {
+    //   next: () => {
+    //     return this.auth
+    //       .login({
+    //         identifier: this.registerForm.value.email,
+    //         password: this.registerForm.value.password,
+    //       })
+    //       .subscribe({
+    //         next: () => this.router.navigate([this.nav.Home])
+    //       });
+    //   },
+    //   error: (err) => console.error(err),
+    // }
+  );
   }
 }

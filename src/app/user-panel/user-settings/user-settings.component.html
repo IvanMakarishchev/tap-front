@@ -1,7 +1,8 @@
-<form [formGroup]="registerForm" (ngSubmit)="create()">
+<form [formGroup]="updateForm" (ngSubmit)="updateUser()">
   <mat-form-field>
     <mat-label>Anrede *</mat-label>
     <mat-select formControlName="salutation" matSelect>
+      <mat-option value="Ohne Angabe">Ohne Angabe</mat-option>
       <mat-option value="Herr">Herr</mat-option>
       <mat-option value="Frau">Frau</mat-option>
     </mat-select>
@@ -22,10 +23,5 @@
     <mat-label>Email *</mat-label>
     <input formControlName="email" matInput />
   </mat-form-field>
-  <mat-form-field>
-    <mat-label>Kennwort *</mat-label>
-    <input formControlName="password" matInput type="password"/>
-  </mat-form-field>
   <button type="submit" mat-button>Registrieren</button>
 </form>
-<a [routerLink]="navAuth.LogIn">Ich habe bereits ein Konto</a>

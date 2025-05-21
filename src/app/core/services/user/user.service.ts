@@ -13,12 +13,25 @@ export class UserService {
 
   create(userData: UserData) {
     return this.http.post(
-      environment.apiUrl + EndPoints.User,
+      environment.apiUrl + EndPoints.Register,
       JSON.stringify(userData),
       {
         headers: {
           'Content-Type': 'application/json',
         },
+      }
+    );
+  }
+
+  updateUser(id: number, userData: Omit<UserData, 'password'>) {
+    return this.http.put(
+      environment.apiUrl + EndPoints.User + `/${id}`,
+      JSON.stringify(userData),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
       }
     );
   }

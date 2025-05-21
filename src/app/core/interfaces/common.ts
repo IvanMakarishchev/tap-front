@@ -3,10 +3,14 @@ export interface Login {
   password: string;
 }
 
+export interface User {
+  user: UserResponseData;
+}
+
 export interface UserData {
   salutation: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   telephone: string;
   email: string;
   password: string;

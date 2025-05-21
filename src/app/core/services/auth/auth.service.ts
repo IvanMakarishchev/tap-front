@@ -2,26 +2,38 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { EndPoints } from '../../enums/endpoints';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { Login, UserResponseData } from '../../interfaces/common';
+import {
+  BehaviorSubject,
+  catchError,
+  finalize,
+  Observable,
+  of,
+  tap,
+} from 'rxjs';
+import { Login, User } from '../../interfaces/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject = new BehaviorSubject<UserResponseData | null>(null);
+  private userSubject = new BehaviorSubject<User | null>(null);
+  private isFetchingSubject = new BehaviorSubject<boolean>(true);
+  private initialCheckDoneSubject = new BehaviorSubject<boolean>(false);
+
   user$ = this.userSubject.asObservable();
+  isFetching$ = this.isFetchingSubject.asObservable();
+  initialCheckDone$ = this.initialCheckDoneSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  login(loginData: Login): Observable<UserResponseData | null> {
+  login(loginData: Login): Observable<User | null> {
     return this.http
-      .post<UserResponseData>(environment.apiUrl + EndPoints.LogIn, loginData, {
+      .post<User>(environment.apiUrl + EndPoints.LogIn, loginData, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       })
       .pipe(
-        tap((user: UserResponseData) => this.userSubject.next(user)),
+        tap((user: User) => this.userSubject.next(user)),
         catchError(() => {
           this.userSubject.next(null);
           return of(null);
@@ -29,34 +41,43 @@ export class AuthService {
       );
   }
 
-  fetchUser(): Observable<UserResponseData | null> {
+  fetchUser(): Observable<User | null> {
+    this.isFetchingSubject.next(true);
     return this.http
-      .get<UserResponseData>(environment.apiUrl + EndPoints.GetToken, {
+      .get<User>(environment.apiUrl + EndPoints.GetToken, {
         withCredentials: true,
       })
       .pipe(
-        tap((user: UserResponseData) => {
+        tap((user: User) => {
           return this.userSubject.next(user);
         }),
         catchError(() => {
           this.userSubject.next(null);
           return of(null);
+        }),
+        finalize(() => {
+          this.isFetchingSubject.next(false);
+          this.initialCheckDoneSubject.next(true);
         })
       );
   }
 
-  refreshToken(): Observable<UserResponseData | null> {
+  refreshToken(): Observable<User | null> {
     return this.http
-      .get<UserResponseData>(environment.apiUrl + EndPoints.RefreshToken, {
+      .get<User>(environment.apiUrl + EndPoints.RefreshToken, {
         withCredentials: true,
       })
       .pipe(
-        tap((user: UserResponseData) => {
+        tap((user: User) => {
           return this.userSubject.next(user);
         }),
         catchError(() => {
           this.userSubject.next(null);
           return of(null);
+        }),
+        finalize(() => {
+          this.isFetchingSubject.next(false);
+          this.initialCheckDoneSubject.next(true);
         })
       );
   }
