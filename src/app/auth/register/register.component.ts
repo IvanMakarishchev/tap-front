@@ -26,7 +26,11 @@ export class RegisterComponent {
   navAuth = NavAuth;
   registerForm: FormGroup;
 
-  constructor(private auth: AuthService, private userService: UserService, private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private userService: UserService,
+    private router: Router
+  ) {
     this.registerForm = new FormGroup({
       salutation: new FormControl('Ohne Angabe'),
       firstname: new FormControl('', { nonNullable: true }),
@@ -40,24 +44,22 @@ export class RegisterComponent {
   create() {
     const body = {
       username: this.registerForm.value.email,
-      ...this.registerForm.value
-    }
+      ...this.registerForm.value,
+    };
     const request$: Observable<any> = this.userService.create(body);
 
-    request$.subscribe(
-    //   {
-    //   next: () => {
-    //     return this.auth
-    //       .login({
-    //         identifier: this.registerForm.value.email,
-    //         password: this.registerForm.value.password,
-    //       })
-    //       .subscribe({
-    //         next: () => this.router.navigate([this.nav.Home])
-    //       });
-    //   },
-    //   error: (err) => console.error(err),
-    // }
-  );
+    request$.subscribe({
+      next: () => {
+        return this.auth
+          .login({
+            identifier: this.registerForm.value.email,
+            password: this.registerForm.value.password,
+          })
+          .subscribe({
+            next: () => this.router.navigate([this.nav.Home]),
+          });
+      },
+      error: (err) => console.error(err),
+    });
   }
 }
