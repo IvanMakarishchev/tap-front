@@ -5,5 +5,6 @@ export enum EndPoints {
     GetToken = '/users/me',
     RefreshToken = '/auth/refresh',
     Appointments = '/appointments',
+    MergeAppointments = '/appointments/merge',
     User = '/users'
 }

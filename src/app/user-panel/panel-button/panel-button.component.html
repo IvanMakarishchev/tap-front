@@ -1,0 +1,25 @@
+<ng-container *ngIf="isFetching$ | async; else gotData">
+  <button disabled mat-button>Fetching...</button>
+</ng-container>
+
+<ng-template #loginLink>
+  <button [routerLink]="navAuth.LogIn" mat-button>Log In</button>
+</ng-template>
+
+<ng-template #gotData>
+  <ng-container *ngIf="user$ | async as user; else loginLink">
+    <button mat-button [matMenuTriggerFor]="login">
+      Hallo, {{ user.firstname }}
+    </button>
+    <mat-menu #login>
+      <button
+        *ngFor="let userItem of navUser | keyvalue : null"
+        [routerLink]="userItem.value"
+        mat-menu-item
+      >
+        {{ userItem.key }}
+      </button>
+      <button mat-menu-item (click)="logout()">Abmelden</button>
+    </mat-menu>
+  </ng-container>
+</ng-template>

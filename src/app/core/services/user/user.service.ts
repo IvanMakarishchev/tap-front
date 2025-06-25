@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { EndPoints } from '../../enums/endpoints';
-import { UserData } from '../../interfaces/common';
+import { UserResponseData, UserData } from '../../interfaces/common';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private auth: AuthService, private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   create(userData: UserData) {
     return this.http.post(
@@ -23,8 +23,8 @@ export class UserService {
     );
   }
 
-  updateUser(id: number, userData: Omit<UserData, 'password'>) {
-    return this.http.put(
+  updateUser(id: number, userData: Omit<UserData, 'password'>): Observable<UserResponseData> {
+    return this.http.put<UserResponseData>(
       environment.apiUrl + EndPoints.User + `/${id}`,
       JSON.stringify(userData),
       {

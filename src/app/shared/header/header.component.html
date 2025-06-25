@@ -1,25 +1,10 @@
 <nav class="navigation">
-  <button *ngFor="let item of nav | keyvalue : null" [routerLink]="item.value" mat-button>
+  <button
+    *ngFor="let item of nav | keyvalue : null"
+    [routerLink]="item.value"
+    mat-button
+  >
     {{ item.key }}
   </button>
-
-  <ng-container *ngIf="initialCheckDone; else nothingYet">
-    <ng-container *ngIf="user; else loginLink">
-      <button mat-button [matMenuTriggerFor]="login">Hallo, {{ user.user.firstname }}</button>
-      <mat-menu #login>
-        <button *ngFor="let userItem of navUser | keyvalue : null" [routerLink]="userItem.value" mat-menu-item>
-            {{ userItem.key }}
-        </button>
-        <button mat-menu-item (click)="logout()">Abmelden</button>
-      </mat-menu>
-    </ng-container>
-  </ng-container>
-
-  <ng-template #loginLink>
-    <button [routerLink]="navAuth.LogIn" mat-button>Log In</button>
-</ng-template>
-
-<ng-template #nothingYet>
-      <button disabled mat-button>Fetching...</button>
-  </ng-template>
+  <app-panel-button />
 </nav>

@@ -34,3 +34,19 @@ export interface RequestError {
   name: string;
   status: number;
 }
+
+export interface UserAppointments {
+  id: number;
+  documentId: string;
+  salutation: string;
+  telephone: string;
+  email: string;
+  reason: string;
+  date: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date;
+  locale: null;
+  first_name: string;
+  last_name: string;
+}

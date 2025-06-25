@@ -17,7 +17,11 @@ export class AppComponent implements OnInit {
     private auth: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
+
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) this.auth.refreshToken().subscribe();
+    if (isPlatformBrowser(this.platformId))
+      this.auth.refreshToken().subscribe((data) => {
+        return data;
+      });
   }
 }

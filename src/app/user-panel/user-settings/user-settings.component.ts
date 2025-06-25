@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
 import { UserService } from '../../core/services/user/user.service';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { User, UserResponseData } from '../../core/interfaces/common';
+import { UserResponseData } from '../../core/interfaces/common';
 
 @Component({
   selector: 'app-user-settings',
@@ -21,7 +21,7 @@ import { User, UserResponseData } from '../../core/interfaces/common';
 })
 export class UserSettingsComponent implements OnInit {
   updateForm: FormGroup;
-  userData: Observable<User | null>;
+  userData: Observable<UserResponseData | null>;
   id: number | undefined;
 
   constructor(private auth: AuthService, private userService: UserService) {
@@ -37,20 +37,19 @@ export class UserSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData.subscribe({
-      next: (data: User | null) => {
-
+      next: (data: UserResponseData | null) => {
         if (data === null) {
           this.updateForm.reset();
           return;
         }
 
-        this.id = data?.user.id;
+        this.id = data?.id;
         this.updateForm.setValue({
-          salutation: data?.user.salutation ?? 'Ohne Angabe',
-          firstname: data?.user.firstname,
-          lastname: data?.user.lastname,
-          telephone: data?.user.telephone,
-          email: data?.user.email,
+          salutation: data?.salutation ?? 'Ohne Angabe',
+          firstname: data?.firstname,
+          lastname: data?.lastname,
+          telephone: data?.telephone,
+          email: data?.email,
         });
       },
     });
@@ -59,6 +58,8 @@ export class UserSettingsComponent implements OnInit {
   updateUser() {
     this.userService
       .updateUser(<number>this.id, this.updateForm.value)
-      .subscribe();
+      .subscribe((data: UserResponseData) => {
+        this.auth.updateUserSubject = data;
+      });
   }
 }

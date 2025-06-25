@@ -1,42 +1,47 @@
-import { Component } from '@angular/core';
+import { OnInit, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Nav, NavAuth, NavUser } from '../../core/enums/nav';
 import { CommonModule, KeyValuePipe, NgFor } from '@angular/common';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { User } from '../../core/interfaces/common';
+import { Observable, tap } from 'rxjs';
+import { PanelButtonComponent } from '../../user-panel/panel-button/panel-button.component';
+import { UserResponseData } from '../../core/interfaces/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
+    PanelButtonComponent,
     MatButtonModule,
     NgFor,
     KeyValuePipe,
-    MatMenuModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   nav = Nav;
-  navAuth = NavAuth;
-  navUser = NavUser;
-  user: User | null = null;
   isFetching = false;
-  initialCheckDone = false;
+  user$: Observable<UserResponseData | null> | null = null;
 
-  constructor(private auth: AuthService, private router: Router) {
-    this.auth.user$.subscribe((user) => (this.user = user));
-    this.auth.isFetching$.subscribe((fetching) => (this.isFetching = fetching));
-    this.auth.initialCheckDone$.subscribe((done) => (this.initialCheckDone = done));
+  constructor(private auth: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.auth.isFetching$
+      .pipe(
+        tap((fetching) => {
+          // if (!fetching) {
+          //   // this.user$ = this.auth.user$;
+          // }
+          // console.log(this.user$);
+          // console.log(fetching);
+          this.isFetching = fetching;
+        })
+      )
+      .subscribe();
   }
 
-  logout() {
-    this.auth.logout();
-    this.router.navigate([this.nav.Home]);
-  }
 }

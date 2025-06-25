@@ -10,13 +10,13 @@ import {
   of,
   tap,
 } from 'rxjs';
-import { Login, User } from '../../interfaces/common';
+import { Login, User, UserResponseData } from '../../interfaces/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject = new BehaviorSubject<User | null>(null);
+  private userSubject = new BehaviorSubject<UserResponseData | null>(null);
   private isFetchingSubject = new BehaviorSubject<boolean>(true);
   private initialCheckDoneSubject = new BehaviorSubject<boolean>(false);
 
@@ -33,7 +33,7 @@ export class AuthService {
         withCredentials: true,
       })
       .pipe(
-        tap((user: User) => this.userSubject.next(user)),
+        tap((user: User) => this.userSubject.next(user.user)),
         catchError(() => {
           this.userSubject.next(null);
           return of(null);
@@ -41,14 +41,14 @@ export class AuthService {
       );
   }
 
-  fetchUser(): Observable<User | null> {
+  fetchUser(): Observable<UserResponseData | null> {
     this.isFetchingSubject.next(true);
     return this.http
-      .get<User>(environment.apiUrl + EndPoints.GetToken, {
+      .get<UserResponseData>(environment.apiUrl + EndPoints.GetToken, {
         withCredentials: true,
       })
       .pipe(
-        tap((user: User) => {
+        tap((user: UserResponseData) => {
           return this.userSubject.next(user);
         }),
         catchError(() => {
@@ -62,13 +62,14 @@ export class AuthService {
       );
   }
 
-  refreshToken(): Observable<User | null> {
+  refreshToken(): Observable<UserResponseData | null> {
+    this.isFetchingSubject.next(true);
     return this.http
-      .get<User>(environment.apiUrl + EndPoints.RefreshToken, {
+      .get<UserResponseData>(environment.apiUrl + EndPoints.RefreshToken, {
         withCredentials: true,
       })
       .pipe(
-        tap((user: User) => {
+        tap((user: UserResponseData) => {
           return this.userSubject.next(user);
         }),
         catchError(() => {
@@ -84,6 +85,10 @@ export class AuthService {
 
   get isLogged(): boolean {
     return !!this.userSubject.value;
+  }
+
+  set updateUserSubject(data: UserResponseData) {
+    this.userSubject.next(data);
   }
 
   logout() {
