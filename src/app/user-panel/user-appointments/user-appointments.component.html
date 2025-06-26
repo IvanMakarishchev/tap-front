@@ -53,7 +53,7 @@
               [matMenuTriggerFor]="menu"
               aria-label="Appointment actions"
             >
-              <mat-icon class="icon-small">more_horiz</mat-icon>
+              <mat-icon class="icon-small">more_vert</mat-icon>
             </button>
 
             <mat-menu #menu="matMenu">
@@ -83,7 +83,7 @@
             *ngIf="expandedElement.id === element.id"
           >
             <form [formGroup]="editForm">
-                <mat-form-field>
+              <mat-form-field>
                 <mat-label>Am (TT/MM/JJJJ)</mat-label>
                 <input matInput [matDatepicker]="datepicker" formControlName="date" />
                 <mat-datepicker #datepicker />

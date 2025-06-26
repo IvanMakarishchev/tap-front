@@ -87,6 +87,10 @@ export class AuthService {
     return !!this.userSubject.value;
   }
 
+  get getCurrentUser(): UserResponseData | null {
+    return this.userSubject.value;
+  }
+
   set updateUserSubject(data: UserResponseData) {
     this.userSubject.next(data);
   }

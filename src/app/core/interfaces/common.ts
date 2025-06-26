@@ -50,3 +50,26 @@ export interface UserAppointments {
   first_name: string;
   last_name: string;
 }
+
+export interface userPet {
+  id: number,
+  petName: string | null,
+  petType: string,
+  regNumber: string | null,
+  chipNumber: string| null,
+  user: UserData,
+  doctorNotes: string | null,
+  userNotes: string | null,
+  appointments: UserAppointments | null,
+  recommendations: string | null,
+  createdAt: Date,
+  deletedAt: Date | null
+}
+
+export interface PetData {
+    petName: string | null,
+    petType: string,
+    regNumber: string | null,
+    chipNumber: string | null,
+    userNotes: string | null
+}

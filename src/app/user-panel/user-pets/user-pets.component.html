@@ -1,1 +1,25 @@
-<p>user-pets works!</p>
+<section class="container">
+  <mat-card appearance="outlined" class="card-container">
+    <img
+      class="mat-card-image"
+      src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-header class="mat-card-header">
+      <mat-card-title> Australian Shepherd</mat-card-title>
+      <mat-card-subtitle>Herding group</mat-card-subtitle>
+    </mat-card-header>
+    <div class="button-container">
+      <button mat-icon-button aria-label="View more information">
+        <mat-icon>notes</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="More actions">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+  <button class="full-width" mat-button aria-label="Add new pet" (click)="openDialog()">
+    <mat-icon>add</mat-icon>
+    <span>Add new pet</span>
+  </button>
+</section>
